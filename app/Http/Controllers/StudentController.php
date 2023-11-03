@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Response;
 
 class StudentController extends Controller
 {
@@ -41,15 +42,22 @@ class StudentController extends Controller
             "student_fees"=>"required",
         ]);
 
-        return Student::where('student_id',$id)->update([
+        $result= Student::where('student_id',$id)->update([
             'student_name'=>$request->student_name,
             'student_city'=>$request->student_city,
             'student_fees'=>$request->student_fees,
         ]);
+        if ($result) {
+            return response()->json(["Result"=>"data updated"]);
+        }
     }
 
-    public function destroy( $id)
+    public function destroy(Request $request)
     {
-        return Student::where('student_id',$id)->delete();
+        $id=$request->student_id;
+        $result= Student::where('student_id',$id)->delete();
+        if ($result) {
+            return response()->json(["Result"=>"data Delete Successfully"]);
+        }
     }
 }
