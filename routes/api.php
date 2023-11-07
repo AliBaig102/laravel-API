@@ -17,8 +17,8 @@ use App\Http\Controllers\StudentController;
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
-Route::get('/students',[StudentController::class,"index"]);
-Route::post('/students',[StudentController::class,"store"]);
+Route::post('/students',[StudentController::class,"index"]);
+Route::post('/students/add',[StudentController::class,"store"]);
 Route::post('/students/update/{id}',[StudentController::class,"update"]);
 Route::post('/students/delete',[StudentController::class,"destroy"]);
 Route::get('/students/{id}',[StudentController::class,"show"]);

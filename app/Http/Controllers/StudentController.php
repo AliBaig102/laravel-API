@@ -8,9 +8,14 @@ use Response;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->data){
+            $data=$request->data;
+            return Student::where("student_name","like","%$data%")->get();
+        }else{
         return Student::all();
+        }
     }
 
     public function store(Request $request)
@@ -21,11 +26,16 @@ class StudentController extends Controller
             "student_fees"=>"required",
         ]);
 
-        return Student::insert([
+        $result= Student::insert([
             'student_name'=>$request->student_name,
             'student_city'=>$request->student_city,
             'student_fees'=>$request->student_fees,
         ]);
+        if ($result){
+            return response()->json(['insertResult'=>"Data successfully inserted in database"]);
+        }else{
+            return response()->json(['insertResult'=>"Data Not inserted in database"]);
+        }
     }
 
     public function show($id)
@@ -48,16 +58,15 @@ class StudentController extends Controller
             'student_fees'=>$request->student_fees,
         ]);
         if ($result) {
-            return response()->json(["Result"=>"data updated"]);
+            return response()->json(["editResult"=>"data updated successfully"]);
         }
     }
-
     public function destroy(Request $request)
     {
         $id=$request->student_id;
         $result= Student::where('student_id',$id)->delete();
         if ($result) {
-            return response()->json(["Result"=>"data Delete Successfully"]);
+            return response()->json(["deleteResult"=>"data Delete Successfully"]);
         }
     }
 }
